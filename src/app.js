@@ -27,6 +27,7 @@ var App = {
             } catch (error) {
                 // User denied account access...
             }
+            web3.eth.defaultAccount = ethereum._state.accounts[0]
         }
         // Legacy dapp browsers...
         else if (window.web3) {
@@ -66,6 +67,12 @@ var App = {
         App.setLoading(false)
     },
 
+    createTask: async () => {
+        App.setLoading(true)
+        const content = $('#newTask').val()
+        await App.todoList.createTask(content)
+        window.location.reload()
+    },
 
     setLoading: (isLoading) => {
         const loader = $('#loader')
@@ -94,7 +101,7 @@ var App = {
             $newTaskTemplate.find('input')
                 .prop('name', taskId)
                 .prop('checked', taskCompleted)
-                // .on('click', App.toggleCompleted)
+            // .on('click', App.toggleCompleted)
 
             if (taskCompleted) {
                 $('#completedTaskList').append($newTaskTemplate)
